@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Custom GPT Form Guide</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+        const HelpCircle = () => <span>❓</span>;
+        const Eye = () => <span>👁️</span>;
+
+        function FormExplainer() {
+          const [activeHotspot, setActiveHotspot] = useState(null);
+
+          const hotspots = [
+            {
+              id: 1,
+              x: 50,
+              y: 16,
+              title: "Name Your GPT",
+              description: "Choose a clear, descriptive name that tells users exactly what this GPT does. Be specific about the GPT's purpose rather than generic. Example: 'Market Research Analyzer' instead of just 'Helper'."
+            },
+            {
+              id: 2,
+              x: 50,
+              y: 20,
+              title: "Write a Clear Description",
+              description: "Summarize what the GPT does in 1-2 lines. This appears in search results, so make it compelling and informative. Include the key benefit or use case. Avoid vague descriptions - be specific about what problems it solves."
+            },
+            {
+              id: 3,
+              x: 50,
+              y: 28,
+              title: "Craft Strong Instructions",
+              description: "This is the most critical section. Define:\n• The GPT's specific role and expertise\n• How it should respond (tone, format, style)\n• What it should avoid doing\n• Key frameworks or methodologies to use\n\nBe explicit about boundaries. Use consistent terminology. The GPT will follow these instructions in every conversation."
+            },
+            {
+              id: 4,
+              x: 50,
+              y: 38,
+              title: "Conversation Starters",
+              description: "Provide 3-5 example prompts that showcase what this GPT does best. These help users understand the GPT's capabilities and get started quickly. Make them specific and actionable, not generic questions."
+            },
+            {
+              id: 5,
+              x: 50,
+              y: 42,
+              title: "Upload Knowledge Files",
+              description: "Upload relevant documents, data, or reference materials. The GPT can access these during conversations. Best practices:\n• Use clear, well-structured files\n• Include source citations when possible\n• Organize content logically\n• Consider file size limits\n\nNote: Users may see parts of uploaded content in responses."
+            },
+            {
+              id: 6,
+              x: 50,
+              y: 52,
+              title: "Enable Key Capabilities",
+              description: "Select capabilities based on your GPT's purpose:\n\n✓ Web Search: For current information and research\n✓ Image Generation: For creating visuals\n✓ Code Interpreter: For data analysis, calculations, and file processing\n\nOnly enable what you need. Each adds complexity and potential points of failure."
+            },
+            {
+              id: 7,
+              x: 50,
+              y: 67,
+              title: "Test Before Publishing",
+              description: "Critical step: Use the Preview pane to test your GPT thoroughly.\n\n1. Try your conversation starters\n2. Test edge cases and unusual inputs\n3. Verify it follows instructions consistently\n4. Check if it avoids doing what you told it not to do\n5. Simulate different user personas\n\nIterate on your instructions based on test results."
+            }
+          ];
+
+          const instructions = `ESSENTIAL GUIDELINES FOR CREATING YOUR CUSTOM GPT
+
+Based on Darden Business School's Custom GPT Design Checklist:
+
+KEY PRINCIPLES:
+1. Clarify Scope: Define exactly what your GPT should (and shouldn't) do
+2. Clear Description: Help users quickly understand the value proposition
+3. Strong Instructions: This is your GPT's "system prompt" - be explicit and detailed
+4. Create Transparency: Users should understand how the GPT works and its limitations
+5. Test with User Personas: Simulate different types of users and use cases
+
+COMMON PITFALLS TO AVOID:
+❌ Vague instructions that leave too much interpretation
+❌ Not defining boundaries (what the GPT should NOT do)
+❌ Skipping the testing phase
+❌ Enabling capabilities you don't actually need
+❌ Generic conversation starters that don't showcase value
+❌ Forgetting to specify tone and response format
+
+QUALITY CHECKLIST:
+✓ Does the name clearly indicate what this GPT does?
+✓ Can someone understand the value in 5 seconds from the description?
+✓ Are the instructions specific about role, behavior, and boundaries?
+✓ Have you tested at least 5-10 different prompts?
+✓ Do conversation starters demonstrate the GPT's unique capabilities?
+✓ Are only necessary capabilities enabled?
+
+Remember: The goal is to create a focused tool that excels at a specific task, not a general-purpose assistant.`;
+
+          return (
+            <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #0f172a, #1e293b)', padding: '2rem' }}>
+              <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+                <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)', overflow: 'hidden' }}>
+                  
+                  {/* Header */}
+                  <div style={{ background: 'linear-gradient(to right, #059669, #10b981)', padding: '1.5rem', color: 'white' }}>
+                    <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                      ❓ OpenAI Custom GPT Form Guide
+                    </h1>
+                    <p style={{ color: '#d1fae5' }}>
+                      Interactive guide based on Darden Business School's best practices
+                    </p>
+                  </div>
+
+                  {/* Instructions Section */}
+                  <div style={{ background: 'linear-gradient(to right, #eff6ff, #eef2ff)', borderBottom: '2px solid #dbeafe', padding: '1.5rem' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#1e3a8a', marginBottom: '0.75rem' }}>
+                      👁️ Quick Start Guide
+                    </h3>
+                    <div style={{ color: '#374151', whiteSpace: 'pre-wrap', lineHeight: '1.625', fontSize: '0.875rem' }}>
+                      {instructions}
+                    </div>
+                  </div>
+
+                  {/* Main Content */}
+                  <div style={{ padding: '1.5rem' }}>
+                    <div style={{ background: '#fffbeb', border: '2px solid #fcd34d', borderRadius: '0.75rem', padding: '1rem', marginBottom: '1.5rem' }}>
+                      <p style={{ color: '#78350f', fontWeight: '500' }}>
+                        💡 <strong>How to use:</strong> Click on any numbered point on the form below to see detailed guidance for that field.
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+                      {/* Form Placeholder */}
+                      <div>
+                        <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+                          <div style={{ background: '#1f2937', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', border: '2px solid #4b5563', padding: '2rem', minHeight: '800px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+                              <div style={{ width: '4rem', height: '4rem', background: '#4b5563', borderRadius: '9999px' }}></div>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ background: '#374151', height: '2rem', width: '8rem', borderRadius: '0.25rem', marginBottom: '0.5rem' }}></div>
+                                <div style={{ background: '#374151', height: '1rem', width: '6rem', borderRadius: '0.25rem' }}></div>
+                              </div>
+                            </div>
+                            
+                            {[
+                              { label: 'Name', height: '2.5rem' },
+                              { label: 'Description', height: '2.5rem' },
+                              { label: 'Instructions', height: '8rem' },
+                              { label: 'Conversation starters', height: '2.5rem' },
+                              { label: 'Knowledge', height: '4rem' },
+                              { label: 'Capabilities', height: '6rem' }
+                            ].map((field, idx) => (
+                              <div key={idx} style={{ marginBottom: '1.5rem' }}>
+                                <div style={{ color: '#9ca3af', fontSize: '0.875rem', marginBottom: '0.5rem' }}>{field.label}</div>
+                                <div style={{ background: '#374151', height: field.height, borderRadius: '0.5rem' }}></div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Hotspots */}
+                          {hotspots.map((hotspot, index) => (
+                            <div
+                              key={hotspot.id}
+                              onClick={() => setActiveHotspot(activeHotspot === hotspot.id ? null : hotspot.id)}
+                              style={{
+                                position: 'absolute',
+                                left: `${hotspot.x}%`,
+                                top: `${hotspot.y}%`,
+                                transform: 'translate(-50%, -50%)',
+                                width: activeHotspot === hotspot.id ? '3.5rem' : '3rem',
+                                height: activeHotspot === hotspot.id ? '3.5rem' : '3rem',
+                                borderRadius: '9999px',
+                                border: '4px solid white',
+                                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                background: activeHotspot === hotspot.id ? '#10b981' : '#2563eb',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: activeHotspot === hotspot.id ? 20 : 10
+                              }}
+                            >
+                              <span style={{ color: 'white', fontWeight: 'bold', fontSize: '1.125rem' }}>
+                                {index + 1}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Explanation Panel */}
+                      <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ background: 'linear-gradient(to bottom right, #f9fafb, #f3f4f6)', borderRadius: '0.75rem', border: '2px solid #e5e7eb', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>
+                            {activeHotspot ? `🎯 Field Guidance` : '❓ Select a Point'}
+                          </h3>
+                          
+                          {activeHotspot ? (
+                            <div>
+                              {hotspots.find(h => h.id === activeHotspot) && (
+                                <>
+                                  <div style={{ borderLeft: '4px solid #3b82f6', paddingLeft: '1rem', marginBottom: '1rem' }}>
+                                    <h4 style={{ fontSize: '1.125rem', fontWeight: 'bold', color: '#1e3a8a' }}>
+                                      {hotspots.find(h => h.id === activeHotspot).title}
+                                    </h4>
+                                  </div>
+                                  <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1rem', border: '1px solid #e5e7eb' }}>
+                                    <p style={{ color: '#374151', lineHeight: '1.625', whiteSpace: 'pre-wrap', fontSize: '0.875rem' }}>
+                                      {hotspots.find(h => h.id === activeHotspot).description}
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => setActiveHotspot(null)}
+                                    style={{
+                                      width: '100%',
+                                      marginTop: '1rem',
+                                      padding: '0.5rem 1rem',
+                                      background: '#2563eb',
+                                      color: 'white',
+                                      borderRadius: '0.5rem',
+                                      fontWeight: '500',
+                                      border: 'none',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                    Close & Select Another
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          ) : (
+                            <div style={{ background: 'white', borderRadius: '0.5rem', padding: '1.5rem', textAlign: 'center', border: '2px dashed #d1d5db' }}>
+                              <div style={{ fontSize: '3.75rem', marginBottom: '0.75rem' }}>👆</div>
+                              <p style={{ color: '#4b5563', fontWeight: '500' }}>
+                                Click any numbered point on the form to see detailed guidance
+                              </p>
+                              <p style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '0.5rem' }}>
+                                {hotspots.length} guidance points available
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div style={{ marginTop: '1rem', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.75rem', padding: '1rem' }}>
+                          <h4 style={{ fontWeight: 'bold', color: '#14532d', marginBottom: '0.5rem' }}>💡 Pro Tip</h4>
+                          <p style={{ fontSize: '0.875rem', color: '#166534' }}>
+                            Work through each numbered section in order. The Instructions field (#3) is the most important - spend extra time being specific and clear there.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        ReactDOM.render(<FormExplainer />, document.getElementById('root'));
+    </script>
+</body>
+</html>
