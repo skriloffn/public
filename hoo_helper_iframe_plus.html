@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoo Helper - Chat Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        /* Chat Button */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .chat-button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Chat Window */
+        .chat-window {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        .chat-window.open {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Chat Body */
+        .chat-body {
+            flex: 1;
+            position: relative;
+            background: #f5f5f5;
+        }
+
+        .chat-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .chat-window {
+                bottom: 0;
+                right: 0;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .chat-button {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Badge */
+        .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Content -->
+    <div class="content">
+        <h1>Welcome to Hoo Helper</h1>
+        <p>This is your main page content. The chat assistant is always available in the bottom-right corner!</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+        <p>Click the happy face icon to start chatting with Hoo Helper, your AI assistant.</p>
+        
+        <h2 style="margin-top: 30px; color: #333;">Features</h2>
+        <ul style="color: #666; margin-left: 20px;">
+            <li>Always accessible chat widget</li>
+            <li>Smooth animations and transitions</li>
+            <li>Mobile responsive design</li>
+            <li>Keyboard accessible (ESC to close)</li>
+            <li>Remembers your preference</li>
+        </ul>
+
+        <p style="margin-top: 30px;">Scroll down to see more content and notice how the chat button stays fixed...</p>
+        
+        <div style="height: 800px; background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%); margin-top: 30px; padding: 40px; border-radius: 8px;">
+            <h3 style="color: #333;">More Content Below</h3>
+            <p style="color: #666;">The chat button remains accessible no matter where you scroll on the page.</p>
+        </div>
+    </div>
+
+    <!-- Chat Button -->
+    <button class="chat-button" id="chatButton" aria-label="Open chat">
+        😊
+        <span class="chat-badge">Hi!</span>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>🎓 Hoo Helper</h3>
+            <button class="close-button" id="closeButton" aria-label="Close chat">×</button>
+        </div>
+        <div class="chat-body">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Connecting...</p>
+            </div>
+            <iframe 
+                id="chatIframe"
+                src="" 
+                title="Hoo Helper Chat"
+                loading="lazy"
+                style="display: none;">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeButton = document.getElementById('closeButton');
+        const chatIframe = document.getElementById('chatIframe');
+        const loading = document.getElementById('loading');
+        const chatBadge = document.querySelector('.chat-badge');
+        
+        let iframeLoaded = false;
+
+        // Open chat
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.add('open');
+            chatButton.style.display = 'none';
+            
+            // Load iframe on first open
+            if (!iframeLoaded) {
+                chatIframe.src = 'https://cloudforce.darden.virginia.edu/chat/5a9dacf9-ae1a-41b5-9b07-9bdf598aea5c?embed=true&silentLogin=true';
+                iframeLoaded = true;
+                
+                // Hide loading when iframe loads
+                chatIframe.onload = () => {
+                    loading.style.display = 'none';
+                    chatIframe.style.display = 'block';
+                };
+            } else {
+                loading.style.display = 'none';
+                chatIframe.style.display = 'block';
+            }
+
+            // Remove badge after first open
+            if (chatBadge) {
+                chatBadge.remove();
+            }
+
+            // Save state
+            localStorage.setItem('chatOpened', 'true');
+        });
+
+        // Close chat
+        function closeChat() {
+            chatWindow.classList.remove('open');
+            chatButton.style.display = 'flex';
+        }
+
+        closeButton.addEventListener('click', closeChat);
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && chatWindow.classList.contains('open')) {
+                closeChat();
+            }
+        });
+
+        // Remove badge if chat was previously opened
+        if (localStorage.getItem('chatOpened') === 'true' && chatBadge) {
+            chatBadge.remove();
+        }
+
+        // Initial pulse animation stops after 10 seconds
+        setTimeout(() => {
+            chatButton.style.animation = 'none';
+        }, 10000);
+    </script>
+</body>
+</html>
